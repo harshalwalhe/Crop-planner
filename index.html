@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanGrow - Terrace & Balcony Farming Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+        }
+        
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #2e7d32;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .chat-icon:hover {
+            transform: scale(1.05);
+        }
+        
+        .chat-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+        
+        .chat-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 320px;
+            height: 400px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0);
+            transform-origin: bottom right;
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        
+        .chat-window.open {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .chat-header {
+            background: #2e7d32;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .bot-message {
+            justify-content: flex-start;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 18px;
+        }
+        
+        .bot-message .message-content {
+            background: #e8f5e9;
+            border-top-left-radius: 4px;
+        }
+        
+        .user-message .message-content {
+            background: #2e7d32;
+            color: white;
+            border-top-right-radius: 4px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .chat-input button {
+            margin-left: 10px;
+            border-radius: 20px;
+            padding: 10px 15px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .close-chat {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .suggested-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .suggested-question {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 15px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .suggested-question:hover {
+            background: #c8e6c9;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            padding: 10px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #8bc34a;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    <span>UrbanGrow</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="planner.html">Planner</a></li>
+                    <li><a href="guide.html">Plant Guide</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-login">Login</a>
+                    <a href="#" class="btn btn-signup">Sign Up</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Plan Your Perfect Terrace & Balcony Garden</h1>
+            <p>Get personalized planting recommendations based on your space, sunlight, and location</p>
+            <a href="#planner" class="btn btn-primary">Start Planning</a>
+        </div>
+    </section>
+
+    <!-- Planner Steps -->
+    <section class="planner-steps">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <h3>Enter Dimensions</h3>
+                    <p>Provide the dimensions of your terrace or balcony, or upload photos for automatic detection</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <h3>Sunlight Information</h3>
+                    <p>Tell us how much sunlight your space gets throughout the day</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Your Location</h3>
+                    <p>Share your location for climate-specific recommendations</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <h3>Soil Testing</h3>
+                    <p>Connect soil sensors or manually input your soil conditions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planner Form -->
+    <section class="planner-form" id="planner">
+        <div class="container">
+            <h2 class="section-title">Create Your Planting Plan</h2>
+            <div class="form-container">
+                <form id="crop-planner-form">
+                    <div class="form-group">
+                        <label for="space-type">Space Type</label>
+                        <select id="space-type" required>
+                            <option value="">Select your space type</option>
+                            <option value="terrace">Terrace</option>
+                            <option value="balcony">Balcony</option>
+                            <option value="window">Window Box</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dimensions">Dimensions (feet)</label>
+                        <input type="text" id="dimensions" placeholder="e.g., 10x15" required>
+                    </div>
+
+                    <!-- Enhanced Location Display -->
+                    <div class="form-group">
+                        <label for="location">Your Location</label>
+                        <div class="location-card">
+                            <div class="location-header">
+                                <div class="location-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h3>Location Services Active</h3>
+                                    <p>We're using your location to provide climate-specific recommendations</p>
+                                </div>
+                            </div>
+
+                            <div class="location-details-grid">
+                                <div class="detail-card">
+                                    <h3><i class="fas fa-location-arrow"></i> Detected Location</h3>
+                                    <p><strong>Address:</strong> <span id="detectedAddress">Detecting your location...</span></p>
+                                    <p><strong>Region:</strong> <span id="detectedRegion">Detecting...</span></p>
+                                    <p><strong>Timezone:</strong> <span id="timezone">Detecting...</span></p>
+                                </div>
+
+                                <div class="detail-card">
+                                    <h3><i class="fas fa-globe-asia"></i> Coordinates</h3>
+                                    <p><strong>Latitude:</strong> <span id="latitude" class="coordinates">--</span></p>
+                                    <p><strong>Longitude:</strong> <span id="longitude" class="coordinates">--</span></p>
+                                    <p><strong>Accuracy:</strong> <span id="accuracy">--</span></p>
+                                </div>
+                            </div>
+
+                            <div class="map-container">
+                                <div class="map-placeholder">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <p>Interactive map would be displayed here with your location pinpointed</p>
+                                </div>
+                            </div>
+                            
+                            <div class="climate-info">
+                                <h3 class="section-title">Climate Information for Your Location</h3>
+                                
+                                <div class="climate-details">
+                                    <div class="climate-card">
+                                        <i class="fas fa-temperature-high"></i>
+                                        <div class="value" id="temperature">--°C</div>
+                                        <div class="unit">Current Temperature</div>
+                                    </div>
+                                    
+                                    <div class="climate-card">
+                                        <i class="fas fa-cloud-sun"></i>
+                                        <div class="value" id="humidity">--%</div>
+                                        <div class="unit">Humidity</div>
+                                    </div>
+                                    
+                                    <div class="climate-card">
+                                        <i class="fas fa-wind"></i>
+                                        <div class="value" id="wind">-- km/h</div>
+                                        <div class="unit">Wind Speed</div>
+                                    </div>
+                                    
+                                    <div class="climate-card">
+                                        <i class="fas fa-cloud-rain"></i>
+                                        <div class="value" id="precipitation">--%</div>
+                                        <div class="unit">Precipitation</div>
+                                    </div>
+                                </div>
+                                
+                                <p style="margin-top: 20px; text-align: center; color: #555;">
+                                    <span id="climateRecommendation">We'll provide climate-specific recommendations based on your location.</span>
+                                </p>
+                            </div>
+
+                            <div class="action-buttons">
+                                <!-- GPS Refresh -->
+                                <button type="button" class="btn btn-primary" id="refreshLocation">🔄 Detect via GPS</button>
+                                
+                                <!-- ✅ Manual Location Input -->
+                                <div style="margin-top:10px;">
+                                    <input type="text" id="manualLocationInput" placeholder="Enter city or address" style="padding:5px; width:70%;">
+                                    <button type="button" class="btn btn-secondary" id="setManualLocation">📍 Set Location</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sunlight">Daily Sunlight Hours</label>
+                        <select id="sunlight" required>
+                            <option value="">Select sunlight hours</option>
+                            <option value="low">Less than 3 hours</option>
+                            <option value="medium">3-6 hours</option>
+                            <option value="high">More than 6 hours</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="soil-type">Soil Type</label>
+                        <select id="soil-type">
+                            <option value="">Select soil type</option>
+                            <option value="clay">Clay</option>
+                            <option value="sandy">Sandy</option>
+                            <option value="loamy">Loamy</option>
+                            <option value="sensor">Connect Soil Sensor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Gardening Experience</label>
+                        <select id="experience">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </div>
+
+                    <!-- ✅ Fixed Button -->
+                    <button id="getRecommendations" type="button" class="btn btn-primary" style="width: 100%;">
+                        Get Planting Recommendations
+                    </button>
+
+                    <!-- ✅ Results Box -->
+                    <div id="recommendationResults" style="margin-top:20px; padding:15px; border:1px solid #ccc; border-radius:8px;">
+                        No recommendations yet.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results" id="results">
+        <div class="container">
+            <h2 class="section-title">Recommended Plants For You</h2>
+            <div class="plant-cards" id="plantCards">
+                <!-- Plant cards will be generated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>UrbanGrow</h3>
+                    <p>Helping urban gardeners make the most of their space since 2023.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="index.html">Home</a></p>
+                    <p><a href="guide.html">Plant Guide</a></p>
+                    <p><a href="community.html">Community Forum</a></p>
+                    <p><a href="about.html">About Forum</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> contact@urbangrow.com</p>
+                    <p><i class="fas fa-phone"></i> +91 8117031180</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 UrbanGrow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div class="chatbot-container">
+        <div class="chat-icon" onclick="toggleChat()">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path>
+            </svg>
+        </div>
+        
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <span>Garden Assistant</span>
+                <span class="close-chat" onclick="toggleChat()">×</span>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <p>Hello! I'm your gardening assistant. How can I help you today?</p>
+                        <div class="suggested-questions">
+                            <div class="suggested-question" onclick="sendSuggestedQuestion(this)">What are easy vegetables to grow?</div>
+                            <div class="suggested-question" onclick="sendSuggestedQuestion(this)">How often should I water my plants?</div>
+                            <div class="suggested-question" onclick="sendSuggestedQuestion(this)">What plants are good for beginners?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Type your question..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Chatbot functionality
+        let chatOpen = false;
+        
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatOpen = !chatOpen;
+            
+            if (chatOpen) {
+                chatWindow.classList.add('open');
+            } else {
+                chatWindow.classList.remove('open');
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
+            
+            if (message === '') return;
+            
+            addMessage(message, 'user');
+            userInput.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate bot thinking
+            setTimeout(() => {
+                removeTypingIndicator();
+                generateBotResponse(message);
+            }, 1500);
+        }
+        
+        function sendSuggestedQuestion(element) {
+            const question = element.textContent;
+            addMessage(question, 'user');
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate bot thinking
+            setTimeout(() => {
+                removeTypingIndicator();
+                generateBotResponse(question);
+            }, 1500);
+        }
+        
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = `<p>${message}</p>`;
+            
+            messageDiv.appendChild(contentDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message';
+            typingDiv.id = 'typingIndicator';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'typing-indicator';
+            contentDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            
+            typingDiv.appendChild(contentDiv);
+            chatMessages.appendChild(typingDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function generateBotResponse(userMessage) {
+            let response = '';
+            const lowerMessage = userMessage.toLowerCase();
+            
+            if (lowerMessage.includes('vegetable') || lowerMessage.includes('easy') || lowerMessage.includes('beginner')) {
+                response = "For beginners, I recommend starting with tomatoes, lettuce, or radishes. They're relatively easy to grow and don't require too much maintenance. Would you like specific growing tips for any of these?";
+            } 
+            else if (lowerMessage.includes('water') || lowerMessage.includes('watering')) {
+                response = "Watering needs depend on the plant type and your climate. Generally, most plants need about 1 inch of water per week. It's best to water deeply but infrequently to encourage deep root growth. Early morning is the ideal time for watering.";
+            }
+            else if (lowerMessage.includes('soil') || lowerMessage.includes('dirt')) {
+                response = "Good soil is crucial for gardening. For most plants, well-draining soil rich in organic matter works best. You can improve your soil by adding compost or well-rotted manure. Have you tested your soil's pH?";
+            }
+            else if (lowerMessage.includes('pest') || lowerMessage.includes('bug')) {
+                response = "Common garden pests include aphids, slugs, and caterpillars. Natural solutions like neem oil, diatomaceous earth, or introducing beneficial insects can help. What specific pest problem are you facing?";
+            }
+            else if (lowerMessage.includes('sun') || lowerMessage.includes('light')) {
+                response = "Most vegetables and flowers need 6-8 hours of direct sunlight daily. Some plants like lettuce and spinach can tolerate partial shade. What are you planning to grow?";
+            }
+            else if (lowerMessage.includes('container') || lowerMessage.includes('pot')) {
+                response = "Container gardening is great for small spaces! Make sure your containers have drainage holes and use high-quality potting mix. Smaller containers need more frequent watering. What would you like to grow in containers?";
+            }
+            else if (lowerMessage.includes('fertiliz') || lowerMessage.includes('nutrient')) {
+                response = "Plants need three primary nutrients: nitrogen (N) for leaf growth, phosphorus (P) for roots and flowers, and potassium (K) for overall health. Organic options include compost, fish emulsion, and bone meal.";
+            }
+            else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                response = "Hello! I'm here to help with your gardening questions. What would you like to know today?";
+            }
+            else if (lowerMessage.includes('thank')) {
+                response = "You're welcome! Happy to help with your gardening journey. Is there anything else you'd like to know?";
+            }
+            else {
+                response = "I'm here to help with your gardening questions! You can ask me about plant selection, watering, soil preparation, pest control, or any other gardening topic. What would you like to know?";
+            }
+            
+            addMessage(response, 'bot');
+            
+            // Add follow-up suggestions for certain responses
+            if (!lowerMessage.includes('hello') && !lowerMessage.includes('thank')) {
+                addFollowUpQuestions(response);
+            }
+        }
+        
+        function addFollowUpQuestions(response) {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Remove any existing suggested questions
+            const existingSuggestions = chatMessages.querySelector('.suggested-questions');
+            if (existingSuggestions) {
+                existingSuggestions.remove();
+            }
+            
+            const suggestionsDiv = document.createElement('div');
+            suggestionsDiv.className = 'suggested-questions';
+            
+            if (response.includes('tomatoes') || response.includes('lettuce') || response.includes('radishes')) {
+                suggestionsDiv.innerHTML = `
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">Tell me about growing tomatoes</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">How to grow lettuce</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">When to harvest radishes</div>
+                `;
+            } else if (response.includes('pest')) {
+                suggestionsDiv.innerHTML = `
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">How to get rid of aphids</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">Natural slug control methods</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">Preventing caterpillar damage</div>
+                `;
+            } else if (response.includes('container')) {
+                suggestionsDiv.innerHTML = `
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">Best plants for container gardening</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">Container soil mix recipe</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">Watering container plants</div>
+                `;
+            } else {
+                suggestionsDiv.innerHTML = `
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">What are easy vegetables to grow?</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">How often should I water my plants?</div>
+                    <div class="suggested-question" onclick="sendSuggestedQuestion(this)">What plants are good for beginners?</div>
+                `;
+            }
+            
+            // Add suggestions to the last bot message
+            const botMessages = chatMessages.querySelectorAll('.bot-message');
+            const lastBotMessage = botMessages[botMessages.length - 1];
+            lastBotMessage.querySelector('.message-content').appendChild(suggestionsDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Auto-open the chat after a short delay
+        setTimeout(() => {
+            if (!chatOpen) {
+                toggleChat();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

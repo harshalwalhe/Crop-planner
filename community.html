@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanGrow - Community Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: #d4e157;
+        }
+        
+        .tabs {
+            display: flex;
+            margin: 30px 0;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #757575;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            color: #2e7d32;
+            border-bottom: 3px solid #2e7d32;
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .form-title {
+            font-size: 24px;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-title i {
+            margin-right: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #2e7d32;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-contact {
+            background-color: #ff9800;
+        }
+        
+        .btn-contact:hover {
+            background-color: #f57c00;
+        }
+        
+        .posts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .post {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .post:hover {
+            transform: translateY(-5px);
+        }
+        
+        .post-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .post-content {
+            padding: 20px;
+        }
+        
+        .post-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        
+        .post-date {
+            color: #9e9e9e;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .post-text {
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .post-author {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+            background-color: #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .author-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .post-actions {
+            display: flex;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .post-action {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            color: #757575;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .post-action:hover {
+            color: #4caf50;
+        }
+        
+        .post-action i {
+            margin-right: 5px;
+        }
+        
+        .progress-post {
+            position: relative;
+        }
+        
+        .progress-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #ff9800;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Marketplace Styles */
+        .marketplace-filters {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-group h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-option {
+            padding: 8px 15px;
+            background: #f5f5f5;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-option:hover, .filter-option.active {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            padding: 0 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+        }
+        
+        .marketplace-item {
+            position: relative;
+        }
+        
+        .item-distance {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .item-condition {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .item-exchange-type {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #ffecb3;
+            color: #f57c00;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            color: #757575;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        @media (max-width: 768px) {
+            .posts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .tabs {
+                justify-content: center;
+            }
+            
+            .filter-options {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                UrbanGrow
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="planner.html">Planner</a></li>
+                     <li><a href="guide.html">Plant Guide</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Community Hub</h1>
+        <p>Share your gardening journey, track progress, and trade plants with local growers</p>
+        
+        <div class="tabs">
+            <div class="tab active" data-target="blogs">Blog Posts</div>
+            <div class="tab" data-target="progress">Progress Updates</div>
+            <div class="tab" data-target="marketplace">Marketplace</div>
+        </div>
+        
+        <div id="blogs" class="content-section active">
+            <div class="form-container">
+                <h2 class="form-title"><i class="fas fa-edit"></i> Write a New Blog Post</h2>
+                <form id="blog-form">
+                    <div class="form-group">
+                        <label for="blog-title">Title</label>
+                        <input type="text" id="blog-title" class="form-control" placeholder="Enter a title for your blog post">
+                    </div>
+                    <div class="form-group">
+                        <label for="blog-content">Your Experience</label>
+                        <textarea id="blog-content" class="form-control" placeholder="Share your gardening experience..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="blog-image">Upload Image (Optional)</label>
+                        <input type="file" id="blog-image" class="form-control">
+                    </div>
+                    <button type="submit" class="btn">Publish Blog Post</button>
+                </form>
+            </div>
+            
+            <h2 class="form-title"><i class="fas fa-newspaper"></i> Recent Blog Posts</h2>
+            <div class="posts-container" id="blog-posts">
+                <!-- Sample Blog Posts -->
+                <div class="post">
+                    <img src="https://i.postimg.cc/hjV54wmZ/indoor.jpg" class="post-img" alt="Indoor garden">
+                    <div class="post-content">
+                        <h3 class="post-title">My First Indoor Garden</h3>
+                        <span class="post-date">June 12, 2023</span>
+                        <p class="post-text">I started my indoor gardening journey three months ago with just a few herbs. Today, I have over 20 plants thriving in my apartment! The key was understanding each plant's light and water needs...</p>
+                        <div class="post-author">
+                            <div class="author-avatar">PC</div>
+                            <span class="author-name">Parth choudhary</span>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="far fa-heart"></i> 24</div>
+                        <div class="post-action"><i class="far fa-comment"></i> 7</div>
+                        <div class="post-action"><i class="far fa-bookmark"></i> Save</div>
+                    </div>
+                </div>
+                
+                <div class="post">
+                    <img src="https://i.postimg.cc/L6QNSR76/tomato.jpg" class="post-img" alt="Tomato harvest">
+                    <div class="post-content">
+                        <h3 class="post-title">Harvesting Tomatoes on My Balcony</h3>
+                        <span class="post-date">June 8, 2023</span>
+                        <p class="post-text">This year I decided to try growing tomatoes on my small balcony. Despite the limited space, I managed to harvest over 5kg of delicious cherry tomatoes! Here's how I did it...</p>
+                        <div class="post-author">
+                            <div class="author-avatar">MS</div>
+                            <span class="author-name">Mohit sharma</span>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="far fa-heart"></i> 42</div>
+                        <div class="post-action"><i class="far fa-comment"></i> 13</div>
+                        <div class="post-action"><i class="far fa-bookmark"></i> Save</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="progress" class="content-section">
+            <div class="form-container">
+                <h2 class="form-title"><i class="fas fa-camera"></i> Share Your Progress</h2>
+                <form id="progress-form">
+                    <div class="form-group">
+                        <label for="progress-image">Upload Plant Photo</label>
+                        <input type="file" id="progress-image" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="progress-caption">Caption</label>
+                        <textarea id="progress-caption" class="form-control" placeholder="Tell us about your plant's progress..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-type">Plant Type (Optional)</label>
+                        <input type="text" id="plant-type" class="form-control" placeholder="e.g., Tomato, Basil, Sunflower">
+                    </div>
+                    <button type="submit" class="btn">Share Progress</button>
+                </form>
+            </div>
+            
+            <h2 class="form-title"><i class="fas fa-chart-line"></i> Recent Progress Updates</h2>
+            <div class="posts-container" id="progress-posts">
+                <!-- Sample Progress Posts -->
+                <div class="post progress-post">
+                    <span class="progress-badge">Week 4</span>
+                    <img src="https://images.unsplash.com/photo-1597848212624-e9f912c936d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" class="post-img" alt="Plant progress">
+                    <div class="post-content">
+                        <p class="post-text">My basil plant is thriving! It's been 4 weeks since I started from seeds, and now it's almost ready for the first harvest.</p>
+                        <div class="post-author">
+                            <div class="author-avatar">MD</div>
+                            <span class="author-name">Madhuri</span>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="far fa-heart"></i> 18</div>
+                        <div class="post-action"><i class="far fa-comment"></i> 5</div>
+                    </div>
+                </div>
+                
+                <div class="post progress-post">
+                    <span class="progress-badge">Month 3</span>
+                    <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" class="post-img" alt="Succulent progress">
+                    <div class="post-content">
+                        <p class="post-text">My succulent collection has grown so much in the past 3 months! I've even propagated several new plants from leaves.</p>
+                        <div class="post-author">
+                            <div class="author-avatar">MR</div>
+                            <span class="author-name">Mayank Das</span>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="far fa-heart"></i> 31</div>
+                        <div class="post-action"><i class="far fa-comment"></i> 9</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="marketplace" class="content-section">
+            <div class="marketplace-filters">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for plants, pots, tools...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Category</h3>
+                    <div class="filter-options">
+                        <div class="filter-option active">All</div>
+                        <div class="filter-option">Plants</div>
+                        <div class="filter-option">Seeds</div>
+                        <div class="filter-option">Pots & Planters</div>
+                        <div class="filter-option">Tools</div>
+                        <div class="filter-option">Soil & Fertilizers</div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Condition</h3>
+                    <div class="filter-options">
+                        <div class="filter-option active">Any</div>
+                        <div class="filter-option">New</div>
+                        <div class="filter-option">Used - Like New</div>
+                        <div class="filter-option">Used - Good</div>
+                        <div class="filter-option">Needs TLC</div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Exchange Type</h3>
+                    <div class="filter-options">
+                        <div class="filter-option active">All</div>
+                        <div class="filter-option">Free</div>
+                        <div class="filter-option">Trade</div>
+                        <div class="filter-option">Sell</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="form-title"><i class="fas fa-store"></i> Local Marketplace</h2>
+            <div class="posts-container" id="marketplace-posts">
+                <!-- Sample Marketplace Items -->
+                <div class="post marketplace-item">
+                    <span class="item-distance">1.2 Km away</span>
+                    <img src="https://i.postimg.cc/DzKdgzH0/rose-pvhfe.jpg" class="post-img" alt="Rose plants">
+                    <div class="post-content">
+                        <h3 class="post-title">Rose Plants</h3>
+                        <span class="item-condition">Used - Good</span>
+                        <span class="item-exchange-type">Sell/Trade</span>
+                        <p class="item-price">Rs:-120.00 each</p>
+                        <p class="post-text">Beautiful red rose plants. I have 5 available for trade or sale. Grown from cuttings, well established.</p>
+                        <button class="btn btn-contact">Contact</button>
+                    </div>
+                </div>
+                
+                <div class="post marketplace-item">
+                    <span class="item-distance">0.8 km away</span>
+                    <img src="https://i.postimg.cc/R0RfLLwp/tomatodjg.jpg" class="post-img" alt="Tomato seeds">
+                    <div class="post-content">
+                        <h3 class="post-title">Tomato Seeds</h3>
+                        <span class="item-condition">New</span>
+                        <span class="item-exchange-type">Sell/Trade</span>
+                        <p class="item-price">Rs:-30.50 per pack</p>
+                        <p class="post-text">Organic heirloom tomato seeds. Great for beginners. High germination rate. Several varieties available.</p>
+                        <button class="btn btn-contact">Contact</button>
+                    </div>
+                </div>
+                
+                <div class="post marketplace-item">
+                    <span class="item-distance">2.3 Km away</span>
+                    <img src="https://i.postimg.cc/kGtBzQtm/pot.jpg" class="post-img" alt="Ceramic pots">
+                    <div class="post-content">
+                        <h3 class="post-title">Ceramic Pots</h3>
+                        <span class="item-condition">Used - Like New</span>
+                        <span class="item-exchange-type">Free</span>
+                        <p class="item-price">Free</p>
+                        <p class="post-text">Assorted ceramic pots, various sizes. Free to good home. Moving and can't take them with me.</p>
+                        <button class="btn btn-contact">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 UrbanGrow - Connect with fellow plant enthusiasts and share your gardening journey</p>
+    </footer>
+
+    <script>
+    // Tab functionality
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs and content sections
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content section
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.target).classList.add('active');
+        });
+    });
+    
+    // Form submission (for demo purposes, would connect to backend in real application)
+    document.getElementById('blog-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Blog post published! (This would connect to your backend in a real application)');
+        this.reset();
+    });
+    
+    document.getElementById('progress-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Progress update shared! (This would connect to your backend in a real application)');
+        this.reset();
+    });
+    
+    // Like functionality
+    document.querySelectorAll('.post-action').forEach(action => {
+        if (action.querySelector('.fa-heart')) {
+            action.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    this.style.color = '#e53935';
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    this.style.color = '#757575';
+                }
+            });
+        }
+    });
+    
+    // Filter option selection
+    document.querySelectorAll('.filter-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const parent = this.parentElement;
+            if (!parent.classList.contains('filter-options')) return;
+            
+            // For single selection filter groups, toggle active class
+            if (parent.querySelector('.filter-option.active')) {
+                parent.querySelector('.filter-option.active').classList.remove('active');
+            }
+            this.classList.add('active');
+        });
+    });
+    
+    // ✅ Fixed Contact button functionality
+    document.querySelectorAll('.btn-contact').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const itemTitle = this.closest('.post-content').querySelector('.post-title').textContent;
+            alert(`Contact form would open for: ${itemTitle} (This would connect to your backend in a real application)`);
+        });
+    });
+</script>
+
+</body>
+</html>

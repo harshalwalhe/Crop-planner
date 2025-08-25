@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About UrbanGrow - Growing Together</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: #d4e157;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            margin-bottom: 50px;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            color: #2e7d32;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #4caf50;
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .mission-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            background: #f1f8e9;
+            transition: transform 0.3s ease;
+        }
+        
+        .mission-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .mission-card i {
+            font-size: 48px;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+        
+        .mission-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: #c8e6c9;
+        }
+        
+        .feature-card i {
+            font-size: 40px;
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .team-member {
+            text-align: center;
+            background: #f1f8e9;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+        
+        .team-info {
+            padding: 20px;
+        }
+        
+        .team-info h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: #2e7d32;
+        }
+        
+        .team-role {
+            color: #757575;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .values-list {
+            list-style: none;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .values-list li {
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f1f8e9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .values-list li i {
+            font-size: 24px;
+            color: #4caf50;
+            margin-right: 20px;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .contact-card {
+            padding: 30px;
+            background: #f1f8e9;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .contact-card i {
+            font-size: 36px;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+        
+        .contact-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+        
+        .contact-details {
+            margin: 15px 0;
+        }
+        
+        .contact-details p {
+            margin: 8px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #2e7d32;
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .footer-links li {
+            margin: 0 15px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+            }
+            
+            .footer-links li {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                UrbanGrow
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="planner.html">Planner</a></li>
+                    <li><a href="guide.html">Plan Guide</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Growing Together, Every Day</h1>
+        <p>UrbanGrow is a community of plant enthusiasts helping each other cultivate green spaces in urban environments</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2 class="section-title">Our Story</h2>
+            <p>UrbanGrow began as a simple idea during a 24-hour hackathon where our team wanted to create something that would help urban gardeners connect and share their experiences. What started as a basic website with just a plant diary feature has evolved into a comprehensive platform for plant enthusiasts.</p>
+            <p>Over time, we've added numerous features based on community feedback. Our platform now includes a thriving marketplace where users can buy, sell, and trade plants and gardening supplies. We've implemented a progress tracking system that lets gardeners document their plant's growth journey with photos and notes.</p>
+            <p>The blog section has become a knowledge hub where both beginners and experts share their experiences, tips, and tricks. Our community features allow users to connect with nearby gardeners, join local gardening groups, and participate in plant swap events.</p>
+            <p>Every feature we've added has been designed with one goal in mind: to make urban gardening more accessible, enjoyable, and successful for everyone, regardless of their space constraints or experience level.</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Our Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-store"></i>
+                    <h3>Marketplace</h3>
+                    <p>Buy, sell, and trade plants and gardening supplies with local enthusiasts</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Progress Tracking</h3>
+                    <p>Document your plant's growth journey with photos and notes</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-blog"></i>
+                    <h3>Gardening Blog</h3>
+                    <p>Share experiences and learn from other urban gardeners</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community</h3>
+                    <p>Connect with nearby gardeners and join local groups</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Event Calendar</h3>
+                    <p>Find and participate in local plant swap events and workshops</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-book"></i>
+                    <h3>Resource Library</h3>
+                    <p>Access guides and tutorials for all your gardening needs</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Our Mission</h2>
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <i class="fas fa-seedling"></i>
+                    <h3>Educate</h3>
+                    <p>Provide accessible gardening knowledge for urban environments</p>
+                </div>
+                <div class="mission-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Connect</h3>
+                    <p>Bring together plant enthusiasts to share experiences and resources</p>
+                </div>
+                <div class="mission-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Inspire</h3>
+                    <p>Encourage more people to start their own gardening journey</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Our Values</h2>
+            <ul class="values-list">
+                <li>
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <div>
+                        <h3>Sustainability</h3>
+                        <p>We promote eco-friendly gardening practices that respect our planet</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-hands-helping"></i>
+                    <div>
+                        <h3>Community</h3>
+                        <p>We believe in the power of shared knowledge and mutual support</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <h3>Innovation</h3>
+                        <p>We constantly explore new ways to make urban gardening easier and more productive</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-door-open"></i>
+                    <div>
+                        <h3>Accessibility</h3>
+                        <p>We strive to make gardening knowledge available to everyone, regardless of experience</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Meet Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://i.postimg.cc/pTQ2Fs8y/ashis.jpg" alt="Ashis Lenka" class="team-img">
+                    <div class="team-info">
+                        <h3>Ashis Lenka</h3>
+                        <div class="team-role">Team member</div>
+                        <p>Passionate about creating solutions that connect plant lovers</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://i.postimg.cc/vZ6wnPwM/amruta.jpg" alt="Amruta Kanase" class="team-img">
+                    <div class="team-info">
+                        <h3>Amruta Kanase</h3>
+                        <div class="team-role">Team member</div>
+                        <p>Dedicated to making gardening accessible through beautiful design</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://i.postimg.cc/GhgbG8BP/harshal.jpg" alt="Michael Chen" class="team-img">
+                    <div class="team-info">
+                        <h3>Harshal</h3>
+                        <div class="team-role">Team Leader</div>
+                        <p>Specializes in community building and user engagement</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://i.postimg.cc/4dsDrs7N/vineet.jpg" alt="David Kim" class="team-img">
+                    <div class="team-info">
+                        <h3>Vineet Kaldate</h3>
+                        <div class="team-role">Team member</div>
+                        <p>Ensures our platform runs smoothly for our growing community</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Sophia Williams" class="team-img">
+                    <div class="team-info">
+                        <h3>Manasi</h3>
+                        <div class="team-role">Team menber</div>
+                        <p>Master gardener with expertise in small-space cultivation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-info">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Us</h3>
+                    <div class="contact-details">
+                        <p>ashislenka311@gmail.com</p>
+                        <p>amrutakanase0907@gmail.com</p>
+                    </div>
+                    <a href="#" class="btn">Send Message</a>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Call Us</h3>
+                    <div class="contact-details">
+                        <p>+91 8432639702</p>
+                        <p>+91 8117031180</p>
+                    </div>
+                    <a href="#" class="btn">Call Now</a>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-hands-helping"></i>
+                    <h3>Partner With Us</h3>
+                    <p>Interested in collaborating or have business inquiries?</p>
+                    <a href="#" class="btn">Partnership Info</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                UrbanGrow
+            </div>
+            <p>Growing community, one plant at a time</p>
+            
+            <ul class="footer-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Community</a></li>
+                <li><a href="#">Resources</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+            
+            <p>&copy; 2025 UrbanGrow. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

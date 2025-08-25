@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UrbanGrow - Garden Planner</title>
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #4caf50;
+      --primary-dark: #1b5e20;
+      --secondary: #8d6e63;
+      --accent: #ffa000;
+      --light-bg: #f8fbf8;
+      --card-bg: #ffffff;
+      --text: #333333;
+      --text-light: #666666;
+      --border: #c8e6c9;
+      --shadow: rgba(46, 125, 50, 0.15);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23c8e6c9' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    
+    /* Header Styles */
+    .header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo span {
+      margin-right: 8px;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    
+    .nav-links li {
+      margin: 0 15px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+    }
+    
+    .login-btn, .signup-btn {
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    
+    .login-btn {
+      color: var(--primary);
+      margin-right: 15px;
+    }
+    
+    .signup-btn {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .login-btn:hover {
+      color: var(--primary-dark);
+    }
+    
+    .signup-btn:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .page-header {
+      text-align: center;
+      padding: 20px 0;
+      margin-bottom: 30px;
+    }
+    
+    .page-logo {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    h1 {
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+      font-size: 2.2rem;
+    }
+    
+    .subtitle {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .planner-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px var(--shadow);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    
+    .card-header {
+      background: var(--primary);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.4rem;
+    }
+    
+    .form-content {
+      padding: 30px;
+    }
+    
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .form-group {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: 1.1rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background: #f9fdf9;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+    }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px var(--shadow);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .result-container {
+      padding: 30px;
+      background: #f1f8e9;
+      border-radius: 16px;
+      margin-top: 30px;
+      border-left: 5px solid var(--accent);
+      display: none;
+    }
+    
+    .result-header {
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .recommendation {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    .plant-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .plant-item {
+      background: #e8f5e9;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    
+    .plant-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .plant-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .tips-section {
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px dashed var(--border);
+    }
+    
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .tip-icon {
+      color: var(--accent);
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-top: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      .header {
+        padding: 15px 20px;
+      }
+      
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      .nav-links.active {
+        display: flex;
+      }
+      
+      .nav-links li {
+        margin: 10px 0;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .auth-buttons {
+        display: none;
+      }
+      
+      .form-row {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .planner-card {
+        margin: 0 10px 30px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <a href="#" class="logo">
+      <span>🌿</span> UrbanGrow
+    </a>
+    
+    <button class="mobile-menu-btn">☰</button>
+    
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="planner.html">Planner</a></li>
+      <li><a href="guide.html">PlantGuide</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    
+    <div class="auth-buttons">
+      <a href="#" class="login-btn">Log In</a>
+      <a href="#" class="signup-btn">Sign Up</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="page-logo">🌿</div>
+      <h1>Garden Planning Assistant</h1>
+      <p class="subtitle">Create your perfect garden with personalized planting recommendations based on your specific conditions and preferences.</p>
+    </div>
+    
+    <div class="planner-card">
+      <div class="card-header">
+        Tell Us About Your Garden
+      </div>
+      
+      <div class="form-content">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="plantType">What would you like to grow?</label>
+            <select id="plantType" class="form-control">
+              <option value="">-- Select Plant Type --</option>
+              <option value="vegetable">Vegetables</option>
+              <option value="fruit">Fruits</option>
+              <option value="herb">Herbs</option>
+              <option value="flower">Flowers</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="containerType">Where will you be growing?</label>
+            <select id="containerType" class="form-control">
+              <option value="">-- Select Container Type --</option>
+              <option value="pots">Pots & Containers</option>
+              <option value="beds">Raised Garden Beds</option>
+              <option value="hanging">Hanging Baskets</option>
+              <option value="ground">In-Ground Planting</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="water">Water Availability</label>
+            <select id="water" class="form-control">
+              <option value="">-- Select Water Availability --</option>
+              <option value="low">Low (limited water)</option>
+              <option value="medium">Medium (regular watering)</option>
+              <option value="high">High (ample water available)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="season">Current Season</label>
+            <select id="season" class="form-control">
+              <option value="">-- Select Season --</option>
+              <option value="spring">Spring</option>
+              <option value="summer">Summer</option>
+              <option value="fall">Fall/Autumn</option>
+              <option value="winter">Winter</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="experience">Gardening Experience Level</label>
+            <select id="experience" class="form-control">
+              <option value="">-- Select Experience Level --</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="expert">Expert Gardener</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="sunlight">Sunlight Availability</label>
+            <select id="sunlight" class="form-control">
+              <option value="">-- Select Sunlight Level --</option>
+              <option value="low">Low (shady area)</option>
+              <option value="partial">Partial Sun (3-6 hours)</option>
+              <option value="full">Full Sun (6+ hours)</option>
+            </select>
+          </div>
+        </div>
+        
+        <button class="btn" onclick="generatePlan()">
+          Generate My Garden Plan
+        </button>
+      </div>
+    </div>
+    
+    <div id="planResult" class="result-container">
+      <!-- Results will be displayed here -->
+    </div>
+  </div>
+  
+  <footer>
+    <p>© 2025 UrbanGrow | Create your perfect green space</p>
+  </footer>
+
+  <script>
+    function generatePlan() {
+      const plantType = document.getElementById("plantType").value;
+      const containerType = document.getElementById("containerType").value;
+      const water = document.getElementById("water").value;
+      const season = document.getElementById("season").value;
+      const experience = document.getElementById("experience").value;
+      const sunlight = document.getElementById("sunlight").value;
+      const resultDiv = document.getElementById("planResult");
+
+      // Validate all fields
+      if (!plantType || !containerType || !water || !season || !experience || !sunlight) {
+        resultDiv.innerHTML = `
+          <div style="color: #d32f2f; padding: 15px; background: #ffebee; border-radius: 8px; text-align: center;">
+            <strong>⚠ Please complete all fields to generate your garden plan.</strong>
+          </div>
+        `;
+        resultDiv.style.display = 'block';
+        return;
+      }
+
+      // Generate recommendations based on inputs
+      let suggestion = "";
+      let plants = [];
+      let tips = [];
+
+      if (plantType === "vegetable") {
+        if (water === "high") {
+          plants = ["Tomatoes 🍅", "Cucumbers 🥒", "Spinach 🍃", "Lettuce 🥬", "Celery 🥬"];
+          suggestion = "Your garden has good water availability, perfect for these thirsty vegetables:";
+          tips = [
+            "Water deeply in the morning to prevent evaporation",
+            "Use mulch to retain soil moisture",
+            "Consider a drip irrigation system for consistent watering"
+          ];
+        } else if (water === "medium") {
+          plants = ["Carrots 🥕", "Beans 🌱", "Bell Peppers 🫑", "Eggplant 🍆", "Zucchini 🥒"];
+          suggestion = "With moderate watering, these vegetables will thrive in your garden:";
+          tips = [
+            "Water when the top inch of soil feels dry",
+            "Use a soaker hose for efficient watering",
+            "Group plants with similar water needs together"
+          ];
+        } else {
+          plants = ["Potatoes 🥔", "Onions 🧅", "Garlic 🧄", "Sweet Potatoes 🍠", "Okra 🌱"];
+          suggestion = "These drought-tolerant vegetables are perfect for your low-water garden:";
+          tips = [
+            "Water deeply but infrequently to encourage deep roots",
+            "Add organic matter to improve water retention",
+            "Consider rainwater harvesting for irrigation"
+          ];
+        }
+      } else if (plantType === "fruit") {
+        if (containerType === "hanging") {
+          plants = ["Strawberries 🍓", "Cherry Tomatoes 🍅", "Cascading Berries 🫐", "Mini Peppers 🫑"];
+          suggestion = "Perfect for hanging baskets! These fruits will trail beautifully:";
+          tips = [
+            "Use high-quality potting mix with good drainage",
+            "Hanging baskets dry out quickly - check moisture daily",
+            "Feed with a balanced fertilizer every 2-3 weeks"
+          ];
+        } else if (containerType === "pots") {
+          plants = ["Blueberries 🫐", "Dwarf Citrus Trees 🍋", "Figs 🍈", "Raspberries 🍇"];
+          suggestion = "These compact fruit varieties thrive in containers:";
+          tips = [
+            "Choose containers at least 18-24 inches deep",
+            "Ensure pots have adequate drainage holes",
+            "Repot every 2-3 years to refresh soil"
+          ];
+        } else {
+          plants = ["Apples 🍎", "Pears 🍐", "Grapes 🍇", "Blackberries 🫐", "Raspberries 🍇"];
+          suggestion = "These fruits will thrive in your garden space:";
+          tips = [
+            "Most fruit plants need full sun for best production",
+            "Prune annually to maintain shape and productivity",
+            "Test soil pH as many fruits have specific requirements"
+          ];
+        }
+      } else if (plantType === "herb") {
+        plants = ["Basil 🌿", "Mint 🌱", "Rosemary 🌲", "Thyme 🍃", "Parsley 🥬", "Cilantro 🌱"];
+        suggestion = "Herbs are versatile and great for beginners! Try these:";
+        tips = [
+          "Harvest regularly to encourage bushy growth",
+          "Most herbs prefer well-draining soil",
+          "Grow mint in containers to prevent it from taking over"
+        ];
+        
+        if (sunlight === "low") {
+          plants = ["Mint 🌱", "Parsley 🥬", "Chives 🌱", "Cilantro 🌱", "Lemon Balm 🍃"];
+          suggestion = "These herbs tolerate lower light conditions:";
+          tips.push("Even shade-tolerant herbs need some morning sun");
+        }
+      } else if (plantType === "flower") {
+        if (containerType === "hanging") {
+          plants = ["Petunias 🌸", "Fuchsias 🌺", "Begonias 🌷", "Lobelia 🔵", "Sweet Potato Vine 🍃"];
+          suggestion = "Create stunning displays with these trailing flowers:";
+          tips = [
+            "Pinch back leggy growth to encourage bushiness",
+            "Deadhead regularly to prolong blooming",
+            "Use slow-release fertilizer in your potting mix"
+          ];
+        } else if (containerType === "pots") {
+          plants = ["Geraniums 🌸", "Marigolds 🌼", "Pansies 🌷", "Snapdragons 🌸", "Dahlias 💐"];
+          suggestion = "These flowers thrive in container gardens:";
+          tips = [
+            "Choose containers with drainage holes",
+            "Use premium potting mix for best results",
+            "Group plants with similar water needs together"
+          ];
+        } else {
+          plants = ["Sunflowers 🌻", "Zinnias 🌸", "Roses 🌹", "Lavender 💜", "Coneflowers 🌸"];
+          suggestion = "Create a beautiful flower garden with these varieties:";
+          tips = [
+            "Prepare soil with compost before planting",
+            "Arrange plants by height with tallest in back",
+            "Include flowers that bloom at different times for season-long color"
+          ];
+        }
+      }
+
+      // Add seasonal considerations
+      if (season === "spring") {
+        tips.push("Spring is perfect for planting! Prepare soil with compost before planting.");
+      } else if (season === "summer") {
+        tips.push("Provide extra water during hot summer months. Mulch to conserve moisture.");
+      } else if (season === "fall") {
+        tips.push("Fall is great for planting perennials. Cool weather reduces transplant shock.");
+      } else if (season === "winter") {
+        tips.push("In winter, focus on planning and soil preparation. Some cold-hardy plants can be started.");
+      }
+
+      // Add experience-based tips
+      if (experience === "beginner") {
+        tips.push("Start with just a few easy-to-grow plants to build confidence.");
+      } else if (experience === "intermediate") {
+        tips.push("Consider experimenting with companion planting to maximize space and deter pests.");
+      } else if (experience === "expert") {
+        tips.push("Try your hand at seed saving from your best plants for next season.");
+      }
+
+      // Display the results
+      resultDiv.innerHTML = `
+        <div class="result-header">
+          <span>🌱</span>
+          <h2>Your Personalized Garden Plan</h2>
+        </div>
+        
+        <div class="recommendation">
+          <p><strong>${suggestion}</strong></p>
+          <div class="plant-list">
+            ${plants.map(plant => `
+              <div class="plant-item">
+                <div class="plant-icon">${plant.split(' ').pop()}</div>
+                <div>${plant}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div class="tips-section">
+          <h3>Gardening Tips for Success</h3>
+          ${tips.map(tip => `
+            <div class="tip-item">
+              <div class="tip-icon">💡</div>
+              <div>${tip}</div>
+            </div>
+          `).join('')}
+        </div>
+        
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="btn" onclick="window.print()">Print Your Garden Plan</button>
+        </div>
+      `;
+      
+      resultDiv.style.display = 'block';
+      
+      // Scroll to results
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Mobile menu toggle functionality
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

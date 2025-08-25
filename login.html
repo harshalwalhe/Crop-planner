@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UrbanGrow - Login or Sign Up</title>
+  <style>
+    /* Header Styles */
+    header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 15px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2e7d32;
+      text-decoration: none;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 30px;
+    }
+    
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    nav a:hover {
+      color: #4caf50;
+    }
+    
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .login-btn, .signup-btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .login-btn {
+      background: transparent;
+      border: 1px solid #4caf50;
+      color: #4caf50;
+    }
+    
+    .login-btn:hover {
+      background: #f1f8f4;
+    }
+    
+    .signup-btn {
+      background: #4caf50;
+      border: 1px solid #4caf50;
+      color: white;
+    }
+    
+    .signup-btn:hover {
+      background: #2e7d32;
+      border-color: #2e7d32;
+    }
+    
+    /* Auth Container Styles */
+    .auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 70px);
+      background-color: #f1f8f4;
+      padding: 40px 20px;
+    }
+    
+    .auth-box {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 450px;
+      padding: 40px;
+      transition: all 0.3s ease;
+    }
+    
+    .auth-box:hover {
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      transform: translateY(-5px);
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .auth-header h2 {
+      color: #2e7d32;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    
+    .auth-header p {
+      color: #666;
+      margin-top: 0;
+    }
+    
+    .auth-form .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .auth-form label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+    }
+    
+    .auth-form input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+      box-sizing: border-box;
+    }
+    
+    .auth-form input:focus {
+      border-color: #4caf50;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      outline: none;
+    }
+    
+    .auth-form button {
+      width: 100%;
+      padding: 14px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .auth-form button:hover {
+      background-color: #2e7d32;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+    }
+    
+    .auth-form button:active {
+      transform: translateY(0);
+    }
+    
+    .auth-alternative {
+      text-align: center;
+      margin-top: 25px;
+      color: #666;
+    }
+    
+    .auth-alternative a {
+      color: #4caf50;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .auth-alternative a:hover {
+      color: #2e7d32;
+      text-decoration: underline;
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 25px 0;
+    }
+    
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: #e0e0e0;
+    }
+    
+    .divider span {
+      padding: 0 15px;
+      color: #999;
+      font-size: 14px;
+    }
+    
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .social-btn img {
+      width: 20px;
+      height: 20px;
+    }
+    
+    /* Form toggle */
+    #signupForm {
+      display: none;
+    }
+    
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px;
+        flex-wrap: wrap;
+      }
+      
+      nav ul {
+        gap: 15px;
+        font-size: 14px;
+      }
+      
+      .auth-box {
+        padding: 30px 20px;
+      }
+      
+      .auth-header h2 {
+        font-size: 24px;
+      }
+    }
+    
+    /* Animation for form switching */
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Message styles */
+    .message {
+      padding: 12px;
+      margin: 15px 0;
+      border-radius: 8px;
+      text-align: center;
+      display: none;
+    }
+    
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <a href="index.html" class="logo">UrbanGrow</a>
+    
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="planner.html">Planner</a></li>
+        <li><a href="guide.html">PlantGuide</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+    
+    <div class="auth-buttons">
+      <button class="login-btn" onclick="showLogin()">Log In</button>
+      <button class="signup-btn" onclick="showSignup()">Sign Up</button>
+    </div>
+  </header>
+
+  <!-- Auth Container -->
+  <div class="auth-container">
+    <!-- Login Form -->
+    <div class="auth-box fade-in" id="loginForm">
+      <div class="auth-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to continue to UrbanGrow</p>
+      </div>
+      
+      <div id="loginMessage" class="message"></div>
+      
+      <form class="auth-form" id="loginFormElement">
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required>
+        </div>
+        
+        <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <input type="checkbox" id="rememberMe" style="width: auto; margin-right: 8px;">
+            <label for="rememberMe" style="display: inline; font-weight: normal;">Remember me</label>
+          </div>
+          <a href="#" style="color: #4caf50; text-decoration: none; font-size: 14px;">Forgot password?</a>
+        </div>
+        
+        <button type="submit" id="loginButton">Log In</button>
+      </form>
+      
+      <div class="divider">
+        <span>Or continue with</span>
+      </div>
+      
+      <div class="social-login">
+        <button class="social-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+          </svg>
+        </button>
+        
+        <button class="social-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+            <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"/>
+            <path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"/>
+          </svg>
+        </button>
+        
+        <button class="social-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+            <path fill="#03A9F4" d="M42,12.429c-1.323,0.586-2.746,0.977-4.247,1.162c1.526-0.906,2.7-2.351,3.251-4.058c-1.428,0.837-3.01,1.452-4.693,1.776C34.967,9.884,33.05,9,30.926,9c-4.08,0-7.387,3.278-7.387,7.32c0,0.572,0.067,1.129,0.193,1.67c-6.138-0.308-11.582-3.226-15.224-7.654c-0.64,1.082-1,2.349-1,3.686c0,2.541,1.301,4.778,3.285,6.096c-1.211-0.037-2.351-0.374-3.349-0.914c0,0.022,0,0.055,0,0.086c0,3.551,2.547,6.508,5.923,7.181c-0.617,0.169-1.269,0.263-1.941,0.263c-0.477,0-0.942-0.054-1.392-0.135c0.94,2.902,3.667,5.023,6.898,5.086c-2.528,1.96-5.712,3.134-9.174,3.134c-0.598,0-1.183-0.034-1.761-0.104C9.268,36.786,13.152,38,17.321,38c13.585,0,21.017-11.156,21.017-20.834c0-0.317-0.01-0.633-0.025-0.945C39.763,15.197,41.013,13.905,42,12.429"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="auth-alternative">
+        Don't have an account? <a href="#" onclick="showSignup()">Sign up</a>
+      </div>
+    </div>
+    
+    <!-- Signup Form -->
+    <div class="auth-box" id="signupForm">
+      <div class="auth-header">
+        <h2>Create Account</h2>
+        <p>Join UrbanGrow to start your planting journey</p>
+      </div>
+      
+      <div id="signupMessage" class="message"></div>
+      
+      <form class="auth-form" id="signupFormElement">
+        <div class="form-group">
+          <label for="signupName">Full Name</label>
+          <input type="text" id="signupName" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signupEmail">Email Address</label>
+          <input type="email" id="signupEmail" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" placeholder="Create a password" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signupConfirmPassword">Confirm Password</label>
+          <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+        </div>
+        
+        <div class="form-group">
+          <input type="checkbox" id="agreeTerms" style="width: auto; margin-right: 8px;">
+          <label for="agreeTerms" style="display: inline; font-weight: normal;">I agree to the <a href="#" style="color: #4caf50;">Terms of Service</a> and <a href="#" style="color: #4caf50;">Privacy Policy</a></label>
+        </div>
+        
+        <button type="submit" id="signupButton">Create Account</button>
+      </form>
+      
+      <div class="divider">
+        <span>Or sign up with</span>
+      </div>
+      
+      <div class="social-login">
+        <button class="social-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l极速赛车开奖直播历史记录
+          </svg>
+        </button>
+        
+        <button class="social-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+            <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"/>
+            <path fill="#fff" d="M26.572,29.036h极速赛车开奖直播历史记录
+          </svg>
+        </button>
+        
+        <button class="social-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+            <path fill="#03A9F4" d="M42,12.429c-1.323,0.586-2.746,0.977-4.247,1.162c1.526-0.906,2.7-2.351,3.251-4.058c-1.428,0.837-3.01,1.452-4.693,1.776C34.967,9.884,33.05,9,30.926,9c-4.08,0-极速赛车开奖直播历史记录
+          </svg>
+        </button>
+      </div>
+      
+      <div class="auth-alternative">
+        Already have an account? <a href="#" onclick="showLogin()">Log in</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // API Base URL - Update this to match your backend server URL
+    const API_BASE_URL = 'http://localhost:3000/api';
+    
+    // Function to show login form
+    function showLogin() {
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('loginForm').classList.add('fade-in');
+      clearMessages();
+    }
+    
+    // Function to show signup form
+    function showSignup() {
+      document.getElementById('signupForm').style.display = 'block';
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('signupForm').classList.add('fade-in');
+      clearMessages();
+    }
+    
+    // Function to clear all messages
+    function clearMessages() {
+      document.getElementById('loginMessage').style.display = 'none';
+      document.getElementById('signupMessage').style.display = 'none';
+    }
+    
+    // Function to show message
+    function showMessage(elementId, message, type) {
+      const messageEl = document.getElementById(elementId);
+      messageEl.textContent = message;
+      messageEl.className = `message ${type}`;
+      messageEl.style.display = 'block';
+      
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        messageEl.style.display = 'none';
+      }, 5000);
+    }
+    
+    // Function to set button loading state
+    function setLoading(button, isLoading) {
+      if (isLoading) {
+        button.innerHTML = '<span class="loading"></span> Processing...';
+        button.disabled = true;
+      } else {
+        if (button.id === 'loginButton') {
+          button.textContent = 'Log In';
+        } else {
+          button.textContent = 'Create Account';
+        }
+        button.disabled = false;
+      }
+    }
+    
+    // Login form submission
+    document.getElementById('loginFormElement').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const loginButton = document.getElementById('loginButton');
+      
+      // Validate inputs
+      if (!email || !password) {
+        showMessage('loginMessage', 'Please fill in all fields', 'error');
+        return;
+      }
+      
+      setLoading(loginButton, true);
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          showMessage('loginMessage', 'Login successful! Redirecting...', 'success');
+          
+          // Store the token in localStorage
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          
+          // Redirect to dashboard or home page after a short delay
+          setTimeout(() => {
+            window.location.href = '/dashboard.html';
+          }, 1500);
+        } else {
+          showMessage('loginMessage', data.message || 'Login failed', 'error');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showMessage('loginMessage', 'Network error. Please try again.', 'error');
+      } finally {
+        setLoading(loginButton, false);
+      }
+    });
+    
+    // Signup form submission
+    document.getElementById('signupFormElement').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      const agreeTerms = document.getElementById('agreeTerms').checked;
+      const signupButton = document.getElementById('signupButton');
+      
+      // Validate inputs
+      if (!name || !email || !password || !confirmPassword) {
+        showMessage('signupMessage', 'Please fill in all fields', 'error');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showMessage('signupMessage', 'Passwords do not match', 'error');
+        return;
+      }
+      
+      if (!agreeTerms) {
+        showMessage('signupMessage', 'You must agree to the terms and conditions', 'error');
+        return;
+      }
+      
+      setLoading(signupButton, true);
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          showMessage('signupMessage', 'Account created successfully! Redirecting...', 'success');
+          
+          // Store the token in localStorage
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          
+          // Redirect to dashboard or home page after a short delay
+          setTimeout(() => {
+            window.location.href = '/dashboard.html';
+          }, 1500);
+        } else {
+          showMessage('signupMessage', data.message || 'Signup failed', 'error');
+        }
+      } catch (error) {
+        console.error('Signup error:', error);
+        showMessage('signupMessage', 'Network error. Please try again.', 'error');
+      } finally {
+        setLoading(signupButton, false);
+      }
+    });
+    
+    // Show login form by default
+    window.onload = function() {
+      showLogin();
+      
+      // Check if user is already logged in
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Redirect to dashboard if already logged in
+        window.location.href = '/dashboard.html';
+      }
+    };
+  </script>
+</body>
+</html>
